@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var dbFile = ".ssh-tools.db"
+var dbFile = ".ssh-machines.db"
 var dbPath string
 
 var rootCmd = cobra.Command{
