@@ -14,7 +14,7 @@ import (
 var deleteCmd = &cobra.Command{
 	Use: string("delete"),
 	Short: string("short: ssh-tools delete xxxx"),
-	Long: string("long: ssh-tools delete xxx"),
+	Long: string("\n删除数据库中的主机信息"),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("ssh-tools delete xxxx")
 		delete()

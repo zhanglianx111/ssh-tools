@@ -12,7 +12,7 @@ var dbPath string
 var rootCmd = cobra.Command{
 	Use: string("use: ssh-tools"),
 	Short: string("short: ssh-tools"),
-	Long: string("long: ssh tools"),
+	Long: string("\nssh登陆主机工具"),
 
 	//Run: func(cmd *cobra.Command, args []string) {
 	//},

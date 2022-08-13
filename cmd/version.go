@@ -14,7 +14,7 @@ var (
 var versionCmd = &cobra.Command{
 	Use: "version",
 	Short: string("short: version information"),
-	Long: string("long: Print version of ssh-tools"),
+	Long: string("\n打印版本信息"),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Author: %s\n", Author)
 		fmt.Printf("GoVersion: %s\n", GoVersion)

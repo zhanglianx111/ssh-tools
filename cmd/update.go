@@ -8,7 +8,7 @@ import (
 var updateCmd = &cobra.Command{
 	Use: string("update"),
 	Short: string("short: ssh-tools update"),
-	Long: string("long: ssh-tools update"),
+	Long: string("\n更新数据库中到主机信息"),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("ssh-tools update")
 	},
@@ -18,3 +18,7 @@ func init() {
 	//updateCmd.Flags().String("")
 }
 
+// 支持更新用户名、密码和描述
+func update() {
+
+}

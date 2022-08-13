@@ -40,4 +40,5 @@ func initEnv() {
 		db, _ := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 		db.Exec(createTable)
 	}
+	fmt.Sprintln()
 }

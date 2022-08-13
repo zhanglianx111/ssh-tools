@@ -12,7 +12,7 @@ import (
 var addCmd = &cobra.Command{
 	Use: string("add"),
 	Short: string("short: ssh-tools add xxxx"),
-	Long: string("long: ssh-tools add xxx"),
+	Long: string("\n将主机信息添加到数据库中"),
 	Run: func(cmd *cobra.Command, args []string) {
 		add(cmd)
 	},
