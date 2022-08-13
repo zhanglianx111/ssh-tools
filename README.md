@@ -29,7 +29,8 @@ Use "use: [command] --help" for more information about a command.
 
 ## 编译
 ```shell 
-go build -ldflags "-w -s -X 'github.com/zhanglianx111/ssh-tools/cmd.Author=username' 
-    -X 'github.com/zhanglianx111/ssh-tools/cmd.GoVersion=\`go version\`' 
-    -X 'github.com/zhanglianx111/ssh-tools/cmd.CommitID=\`git log --pretty=format:%h -1\`'" main.go
+$ cd ssh-tools
+$ go build -ldflags "-w -s -X 'github.com/zhanglianx111/ssh-tools/cmd.Author=username' 
+    -X 'github.com/zhanglianx111/ssh-tools/cmd.GoVersion=`go version`' 
+    -X 'github.com/zhanglianx111/ssh-tools/cmd.CommitID=`git log --pretty=format:%h -1`'"
 ```
