@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"net"
 	"os"
 )
 
@@ -19,23 +20,32 @@ var addCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(addCmd)
 	addCmd.Flags().StringP("description", "d", "", "description about machine")
+
 	addCmd.Flags().StringP("username", "u", "", "username for ssh")
+	addCmd.MarkFlagRequired("username")
+
 	addCmd.Flags().StringP("password", "p", "","password for ssh")
+	addCmd.MarkFlagRequired("password")
+
 	addCmd.Flags().StringP("ip", "i", "", "ip of machine")
+	addCmd.MarkFlagRequired("ip")
+
 }
 
 type A struct {
 	Name string
 }
 func add(cmd *cobra.Command) {
-	ip, err := cmd.Flags().GetString("ip")
+	ipAdd, err := cmd.Flags().GetString("ip")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(6)
 	}
 
-	if 0 == len(ip) {
-		fmt.Println("请输入ip地址、用户名和密码")
+	// TODO: check ip format
+	ip := net.ParseIP(ipAdd)
+	if ip == nil {
+		fmt.Println("ip地址格式错误")
 		os.Exit(1)
 	}
 
@@ -58,7 +68,5 @@ func add(cmd *cobra.Command) {
 	}
 
 	db, _ := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
-
-	db.Create(&Machine{Ip: ip, Description: desc, User: username, Password: passwd})
-	//db.Commit()
+	db.Create(&Machine{Ip: ip.String(), Description: desc, User: username, Password: passwd})
 }
