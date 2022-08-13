@@ -27,29 +27,31 @@ func init() {
 func delete() {
 	machines := getAll()
 
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("输入: ")
-	text, err := reader.ReadString('\n')
-	if err != nil {
-		os.Exit(9)
-	}
+	for {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("输入: ")
+		text, err := reader.ReadString('\n')
+		if err != nil {
+			os.Exit(9)
+		}
 
-	// ssh login machine
-	choose := strings.Split(text, "\n")[0]
-	if 0 == len(choose) {
-		os.Exit(0)
-	}
+		// ssh login machine
+		choose := strings.Split(text, "\n")[0]
+		if 0 == len(choose) {
+			os.Exit(0)
+		}
 
-	index, err := strconv.Atoi(choose)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(10)
-	}
+		index, err := strconv.Atoi(choose)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(10)
+		}
 
-	db, err := gorm.Open(sqlite.Open(dbPath), nil)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(7)
+		db, err := gorm.Open(sqlite.Open(dbPath), nil)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(7)
+		}
+		db.Where("ip = ?", machines[index].Ip).Delete(&Machine{})
 	}
-	db.Where("ip = ?", machines[index].Ip).Delete(&Machine{})
 }
