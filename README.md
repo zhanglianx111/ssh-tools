@@ -2,24 +2,34 @@
 **ssh-tools**将主机信息存储在`sqlite3`数据库中，`login`通过存储在数据库中到主机信息登陆主机。
 
 ## 使用方法
-### 0. init
-`ssh-tools init`初始化`sqlite3`数据库。默认数据库文件位于`~/.ssh-machines.db`
+```shell
+ssh登陆主机工具
 
-### 1. add machine
-`ssh-tools add --name xx --ip 1.1.1.1 --description yyyy --user user --passwd passwd`
+Usage:
+  use: [command]
 
-### 2. delete machine
-`ssh-tools delete --name xx`
-`ssh-tools delete --id 1`
+Available Commands:
+  add         将主机信息添加到数据库中
+  completion  Generate the autocompletion script for the specified shell
+  delete      删除数据库中的主机信息
+  help        Help about any command
+  init        初始化数据库
+  login       登陆主机
+  update      更新数据库中到主机信息
+  version     打印版本信息
 
-### 3. update machine
-`ssh-tools update --name`
+Flags:
+  -h, --help   help for use:
 
-### 4. list machine
-`ssh-tools list`
+Use "use: [command] --help" for more information about a command.
+
+```
+
+
 
 ## 编译
-`go build -ldflags "-X 'github.com/zhanglianx111/ssh-tools/cmd.Author=username' 
-    -X 'github.com/zhanglianx111/ssh-tools/cmd.GoVersion=`go version`' 
-    -X 'github.com/zhanglianx111/ssh-tools/cmd.CommitID=`git log --pretty=format:%h -1`'" main.go
-`
+```shell 
+go build -ldflags "-X 'github.com/zhanglianx111/ssh-tools/cmd.Author=username' 
+    -X 'github.com/zhanglianx111/ssh-tools/cmd.GoVersion=\`go version\`' 
+    -X 'github.com/zhanglianx111/ssh-tools/cmd.CommitID=\`git log --pretty=format:%h -1\`'" main.go
+```
