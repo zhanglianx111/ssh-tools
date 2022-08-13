@@ -18,10 +18,9 @@ const createTable = `
 `
 var initCmd = &cobra.Command{
 	Use: string("init"),
-	Short: string("short: init ssh-tools env"),
-	Long: string("long: init xxx"),
+	Short: string("初始化数据库"),
+	Long: string("\n初始化数据库"),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init sqlite database")
 		initEnv()
 	},
 }

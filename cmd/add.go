@@ -11,7 +11,7 @@ import (
 
 var addCmd = &cobra.Command{
 	Use: string("add"),
-	Short: string("short: ssh-tools add xxxx"),
+	Short: string("将主机信息添加到数据库中"),
 	Long: string("\n将主机信息添加到数据库中"),
 	Run: func(cmd *cobra.Command, args []string) {
 		add(cmd)

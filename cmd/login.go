@@ -13,7 +13,7 @@ import (
 
 var listCmd = &cobra.Command{
 	Use: string("login"),
-	Short: string("short: ssh-tools login"),
+	Short: string("登陆主机"),
 	Long: string("\n登陆主机"),
 	Run: func(cmd *cobra.Command, args []string) {
 		login()

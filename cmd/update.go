@@ -7,7 +7,7 @@ import (
 
 var updateCmd = &cobra.Command{
 	Use: string("update"),
-	Short: string("short: ssh-tools update"),
+	Short: string("更新数据库中到主机信息"),
 	Long: string("\n更新数据库中到主机信息"),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("ssh-tools update")

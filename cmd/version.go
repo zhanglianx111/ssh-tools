@@ -13,7 +13,7 @@ var (
 
 var versionCmd = &cobra.Command{
 	Use: "version",
-	Short: string("short: version information"),
+	Short: string("打印版本信息"),
 	Long: string("\n打印版本信息"),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Author: %s\n", Author)
