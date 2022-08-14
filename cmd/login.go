@@ -83,21 +83,16 @@ func doSsh(ip, user, passwd string) {
 		ssh.VSTATUS: 		1,
 	}
 
-	termWidth, termHeight, err := terminal.GetSize(fd)
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
 	session.Stdin = os.Stdin
 	session.Stdout = os.Stdout
 	session.Stderr = os.Stderr
 
-	if err = session.RequestPty("xterm", termWidth, termHeight, modes); err != nil {
+	if err = session.RequestPty("xterm", TerminalHeight, TerminalWidth, modes); err != nil {
 		fmt.Println("1", err.Error())
 	}
 	if err = session.Shell(); err != nil {
 		fmt.Println("2", err.Error())
 	}
-	if err = session.Wait(); err != nil {
-		fmt.Println("3", err.Error())
-	}
+
+	session.Wait()
 }

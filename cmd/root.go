@@ -6,8 +6,17 @@ import (
 	"os"
 )
 
-var dbFile = ".ssh-machines.db"
-var dbPath string
+var (
+	dbFile = ".ssh-machines.db"
+	dbPath string
+)
+
+const (
+	TerminalWidth = 200
+	TerminalHeight = 51
+)
+
+
 
 var rootCmd = cobra.Command{
 	Use: string("use: ssh-tools"),
