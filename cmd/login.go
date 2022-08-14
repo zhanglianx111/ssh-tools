@@ -29,8 +29,14 @@ func login() {
 	if len(machines) == 0 {
 		return
 	}
+	fmt.Println("序号\tIP\t\t描述")
+	for i:=0; i<len(machines); i++ {
+		fmt.Printf("%d\t%s\t%s\n", i, machines[i].Ip, machines[i].Description)
+	}
+
+
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("输入: ")
+	fmt.Print("请输入序号: ")
 	text, err := reader.ReadString('\n')
 	if err != nil {
 		os.Exit(9)

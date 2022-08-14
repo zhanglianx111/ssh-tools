@@ -27,10 +27,7 @@ func getAll() []Machine {
 	db.Find(&machines)
 	if len(machines) == 0 {
 		fmt.Println("未找到主机")
-		return machines
 	}
-	for i:=0; i<len(machines); i++ {
-		fmt.Println(i, machines[i].Ip, machines[i].Description)
-	}
+
 	return machines
 }
