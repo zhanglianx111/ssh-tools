@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/terminal"
 	"log"
 	"os"
 	"strconv"
@@ -25,6 +26,9 @@ func init() {
 
 func login() {
 	machines := getAll()
+	if len(machines) == 0 {
+		return
+	}
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("输入: ")
 	text, err := reader.ReadString('\n')
@@ -47,6 +51,13 @@ func login() {
 }
 
 func doSsh(ip, user, passwd string) {
+	fd := int(os.Stdin.Fd())
+	oldState, err := terminal.MakeRaw(fd)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	defer terminal.Restore(fd, oldState)
+
 	// 建立SSH客户端连接
 	client, err := ssh.Dial("tcp", ip + ":" + sshPort, &ssh.ClientConfig{
 		User:            user,
@@ -56,6 +67,7 @@ func doSsh(ip, user, passwd string) {
 	if err != nil {
 		log.Fatalf("SSH dial error: %s", err.Error())
 	}
+	defer client.Close()
 
 	// 建立新会话
 	session, err := client.NewSession()
@@ -64,21 +76,28 @@ func doSsh(ip, user, passwd string) {
 		log.Fatalf("new session error: %s", err.Error())
 	}
 
-	session.Stdout = os.Stdout // 会话输出关联到系统标准输出设备
-	session.Stderr = os.Stderr // 会话错误输出关联到系统标准错误输出设备
-	session.Stdin = os.Stdin   // 会话输入关联到系统标准输入设备
 	modes := ssh.TerminalModes{
-		ssh.ECHO:          0,  // 禁用回显（0禁用，1启动）
+		ssh.ECHO:          1,  // 禁用回显（0禁用，1启动）
 		ssh.TTY_OP_ISPEED: 14400, // input speed = 14.4kbaud
 		ssh.TTY_OP_OSPEED: 14400, //output speed = 14.4kbaud
+		ssh.VSTATUS: 		1,
 	}
-	if err = session.RequestPty("linux", 32, 160, modes); err != nil {
-		log.Fatalf("request pty error: %s", err.Error())
+
+	termWidth, termHeight, err := terminal.GetSize(fd)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	session.Stdin = os.Stdin
+	session.Stdout = os.Stdout
+	session.Stderr = os.Stderr
+
+	if err = session.RequestPty("xterm", termWidth, termHeight, modes); err != nil {
+		fmt.Println("1", err.Error())
 	}
 	if err = session.Shell(); err != nil {
-		log.Fatalf("start shell error: %s", err.Error())
+		fmt.Println("2", err.Error())
 	}
 	if err = session.Wait(); err != nil {
-		log.Fatalf("return error: %s", err.Error())
+		fmt.Println("3", err.Error())
 	}
 }

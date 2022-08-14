@@ -33,11 +33,14 @@ func initEnv() {
 	_, err := os.Stat(dbPath)
 	if err != nil && os.IsNotExist(err) {
 		if _, errCreate := os.Create(dbPath); errCreate != nil {
-			fmt.Printf("创建数据失败\n")
+			fmt.Printf("创建数据库失败\n")
 			os.Exit(5)
 		}
 		db, _ := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
-		db.Exec(createTable)
+		t := db.Exec(createTable)
+		if t == nil {
+			fmt.Println("创建表失败")
+		}
 	}
 	fmt.Sprintln()
 }
