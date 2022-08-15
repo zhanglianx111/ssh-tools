@@ -16,10 +16,11 @@ const createTable = `
 	password TEXT NOT NULL
   );
 `
+
 var initCmd = &cobra.Command{
-	Use: string("init"),
+	Use:   string("init"),
 	Short: string("初始化数据库"),
-	Long: string("\n初始化数据库"),
+	Long:  string("\n初始化数据库"),
 	Run: func(cmd *cobra.Command, args []string) {
 		initEnv()
 	},

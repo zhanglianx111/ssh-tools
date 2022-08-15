@@ -13,13 +13,14 @@ import (
 )
 
 var listCmd = &cobra.Command{
-	Use: string("login"),
+	Use:   string("login"),
 	Short: string("登陆主机"),
-	Long: string("\n登陆主机"),
+	Long:  string("\n登陆主机"),
 	Run: func(cmd *cobra.Command, args []string) {
 		login()
 	},
 }
+
 func init() {
 	rootCmd.AddCommand(listCmd)
 }
@@ -58,7 +59,7 @@ func doSsh(ip, user, passwd string) {
 	defer terminal.Restore(fd, oldState)
 
 	// 建立SSH客户端连接
-	client, err := ssh.Dial("tcp", ip + ":" + sshPort, &ssh.ClientConfig{
+	client, err := ssh.Dial("tcp", ip+":"+sshPort, &ssh.ClientConfig{
 		User:            user,
 		Auth:            []ssh.AuthMethod{ssh.Password(passwd)},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
@@ -76,10 +77,10 @@ func doSsh(ip, user, passwd string) {
 	}
 
 	modes := ssh.TerminalModes{
-		ssh.ECHO:          1,  // 禁用回显（0禁用，1启动）
+		ssh.ECHO:          1,     // 禁用回显（0禁用，1启动）
 		ssh.TTY_OP_ISPEED: 14400, // input speed = 14.4kbaud
 		ssh.TTY_OP_OSPEED: 14400, //output speed = 14.4kbaud
-		ssh.VSTATUS: 		1,
+		ssh.VSTATUS:       1,
 	}
 
 	session.Stdin = os.Stdin

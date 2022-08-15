@@ -12,13 +12,14 @@ import (
 )
 
 var deleteCmd = &cobra.Command{
-	Use: string("delete"),
+	Use:   string("delete"),
 	Short: string("删除数据库中的主机信息"),
-	Long: string("\n删除数据库中的主机信息"),
+	Long:  string("\n删除数据库中的主机信息"),
 	Run: func(cmd *cobra.Command, args []string) {
 		delete()
 	},
 }
+
 func init() {
 	rootCmd.AddCommand(deleteCmd)
 }

@@ -8,10 +8,10 @@ import (
 )
 
 type Machine struct {
-	Ip 			string
+	Ip          string
 	Description string
-	User 		string
-	Password 	string
+	User        string
+	Password    string
 }
 
 const sshPort = "22"
@@ -38,7 +38,7 @@ func show(m []Machine) {
 	}
 
 	fmt.Println("序号\tIP\t\t描述")
-	for i:=0; i<len(m); i++ {
+	for i := 0; i < len(m); i++ {
 		fmt.Printf("%d ---> %s\t%s\n", i, m[i].Ip, m[i].Description)
 	}
 }

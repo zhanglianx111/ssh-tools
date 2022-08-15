@@ -10,13 +10,14 @@ import (
 )
 
 var addCmd = &cobra.Command{
-	Use: string("add"),
+	Use:   string("add"),
 	Short: string("将主机信息添加到数据库中"),
-	Long: string("\n将主机信息添加到数据库中"),
+	Long:  string("\n将主机信息添加到数据库中"),
 	Run: func(cmd *cobra.Command, args []string) {
 		add(cmd)
 	},
 }
+
 func init() {
 	rootCmd.AddCommand(addCmd)
 	addCmd.Flags().StringP("description", "d", "", "description about machine")
@@ -24,7 +25,7 @@ func init() {
 	addCmd.Flags().StringP("username", "u", "", "username for ssh")
 	addCmd.MarkFlagRequired("username")
 
-	addCmd.Flags().StringP("password", "p", "","password for ssh")
+	addCmd.Flags().StringP("password", "p", "", "password for ssh")
 	addCmd.MarkFlagRequired("password")
 
 	addCmd.Flags().StringP("ip", "i", "", "ip of machine")
@@ -35,6 +36,7 @@ func init() {
 type A struct {
 	Name string
 }
+
 func add(cmd *cobra.Command) {
 	ipAdd, err := cmd.Flags().GetString("ip")
 	if err != nil {

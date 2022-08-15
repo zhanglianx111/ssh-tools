@@ -12,16 +12,14 @@ var (
 )
 
 const (
-	TerminalWidth = 200
+	TerminalWidth  = 200
 	TerminalHeight = 51
 )
 
-
-
 var rootCmd = cobra.Command{
-	Use: string("use: ssh-tools"),
+	Use:   string("use: ssh-tools"),
 	Short: string("short: ssh-tools"),
-	Long: string("\nssh登陆主机工具"),
+	Long:  string("\nssh登陆主机工具"),
 
 	//Run: func(cmd *cobra.Command, args []string) {
 	//},

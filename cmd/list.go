@@ -5,9 +5,9 @@ import (
 )
 
 var cmdList = &cobra.Command{
-	Use: "list",
+	Use:   "list",
 	Short: "列出主机列表",
-	Long: "列出主机列表",
+	Long:  "列出主机列表",
 	Run: func(cmd *cobra.Command, args []string) {
 		list()
 	},

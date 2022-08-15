@@ -9,9 +9,9 @@ import (
 )
 
 var updateCmd = &cobra.Command{
-	Use: string("update"),
+	Use:   string("update"),
 	Short: string("更新数据库中的主机信息"),
-	Long: string("\n更新数据库中的主机信息"),
+	Long:  string("\n更新数据库中的主机信息"),
 	Run: func(cmd *cobra.Command, args []string) {
 		update(cmd, args)
 	},
@@ -27,7 +27,6 @@ Flags:
   -p, --password string      password
   -u, --username string      username
 `
-
 
 func init() {
 	rootCmd.AddCommand(updateCmd)
@@ -52,12 +51,12 @@ func update(cmd *cobra.Command, args []string) {
 	ip := args[0]
 	var m Machine
 	/*
-	if tx := db.First(&m, "ip = ?", ip); tx.Error.Error() != "" {
-		//fmt.Println(tx.Error.Error())
-		os.Exit(1)
-	}
+		if tx := db.First(&m, "ip = ?", ip); tx.Error.Error() != "" {
+			//fmt.Println(tx.Error.Error())
+			os.Exit(1)
+		}
 
-	 */
+	*/
 
 	user, err := cmd.Flags().GetString("username")
 	if err != nil {
