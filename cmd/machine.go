@@ -31,3 +31,14 @@ func getAll() []Machine {
 
 	return machines
 }
+
+func show(m []Machine) {
+	if len(m) == 0 {
+		os.Exit(0)
+	}
+
+	fmt.Println("序号\tIP\t\t描述")
+	for i:=0; i<len(m); i++ {
+		fmt.Printf("%d\t%s\t%s\n", i, m[i].Ip, m[i].Description)
+	}
+}

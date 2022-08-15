@@ -16,7 +16,6 @@ var deleteCmd = &cobra.Command{
 	Short: string("删除数据库中的主机信息"),
 	Long: string("\n删除数据库中的主机信息"),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("ssh-tools delete xxxx")
 		delete()
 	},
 }
@@ -26,16 +25,17 @@ func init() {
 
 func delete() {
 	machines := getAll()
+	show(machines)
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
-		fmt.Print("输入: ")
+		fmt.Print("请输入要删除主机的序号: ")
 		text, err := reader.ReadString('\n')
 		if err != nil {
 			os.Exit(9)
 		}
 
-		// ssh login machine
+		// delete machine
 		choose := strings.Split(text, "\n")[0]
 		if 0 == len(choose) {
 			os.Exit(0)

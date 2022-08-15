@@ -34,7 +34,6 @@ func login() {
 		fmt.Printf("%d\t%s\t%s\n", i, machines[i].Ip, machines[i].Description)
 	}
 
-
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("请输入序号: ")
 	text, err := reader.ReadString('\n')
