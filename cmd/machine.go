@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"os"
+	"log"
 )
 
 type Machine struct {
@@ -17,13 +17,14 @@ type Machine struct {
 const sshPort = "22"
 
 func getAll() []Machine {
+	machines := []Machine{}
 	//var name, desc, user, passwd, ip string
 	db, err := gorm.Open(sqlite.Open(dbPath), nil)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(7)
+		log.Println(err.Error())
+		return machines
 	}
-	machines := []Machine{}
+
 	db.Find(&machines)
 	if len(machines) == 0 {
 		fmt.Println("未找到主机")
@@ -34,11 +35,12 @@ func getAll() []Machine {
 
 func show(m []Machine) {
 	if len(m) == 0 {
-		os.Exit(0)
+		return
 	}
 
 	fmt.Println("序号\tIP\t\t描述")
 	for i := 0; i < len(m); i++ {
 		fmt.Printf("%d ---> %s\t%s\n", i, m[i].Ip, m[i].Description)
 	}
+	return
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"log"
 	"os"
 )
 
@@ -34,13 +35,13 @@ func initEnv() {
 	_, err := os.Stat(dbPath)
 	if err != nil && os.IsNotExist(err) {
 		if _, errCreate := os.Create(dbPath); errCreate != nil {
-			fmt.Printf("创建数据库失败\n")
-			os.Exit(5)
+			log.Printf("创建数据库失败\n")
+			return
 		}
 		db, _ := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 		t := db.Exec(createTable)
 		if t == nil {
-			fmt.Println("创建表失败")
+			log.Println("创建表失败")
 		}
 	}
 	fmt.Sprintln()

@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -33,25 +34,26 @@ func delete() {
 		fmt.Print("请输入要删除主机的序号: ")
 		text, err := reader.ReadString('\n')
 		if err != nil {
-			os.Exit(9)
+			log.Println(err.Error())
+			return
 		}
 
 		// delete machine
 		choose := strings.Split(text, "\n")[0]
 		if 0 == len(choose) {
-			os.Exit(0)
+			return
 		}
 
 		index, err := strconv.Atoi(choose)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(10)
+			log.Println(err.Error())
+			return
 		}
 
 		db, err := gorm.Open(sqlite.Open(dbPath), nil)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(7)
+			log.Println(err.Error())
+			return
 		}
 		db.Where("ip = ?", machines[index].Ip).Delete(&Machine{})
 	}

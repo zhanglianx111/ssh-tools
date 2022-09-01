@@ -1,12 +1,11 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"net"
-	"os"
+	"log"
 )
 
 var addCmd = &cobra.Command{
@@ -40,33 +39,33 @@ type A struct {
 func add(cmd *cobra.Command) {
 	ipAdd, err := cmd.Flags().GetString("ip")
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(6)
+		log.Print(err.Error())
+		return
 	}
 
 	// TODO: check ip format
 	ip := net.ParseIP(ipAdd)
 	if ip == nil {
-		fmt.Println("ip地址格式错误")
-		os.Exit(1)
+		log.Println("ip地址格式错误")
+		return
 	}
 
 	desc, err := cmd.Flags().GetString("description")
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(6)
+		log.Println(err.Error())
+		return
 	}
 
 	username, err := cmd.Flags().GetString("username")
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(6)
+		log.Println(err.Error())
+		return
 	}
 
 	passwd, err := cmd.Flags().GetString("password")
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(6)
+		log.Println(err.Error())
+		return
 	}
 
 	db, _ := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})

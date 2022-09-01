@@ -10,6 +10,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var listCmd = &cobra.Command{
@@ -63,9 +64,11 @@ func doSsh(ip, user, passwd string) {
 		User:            user,
 		Auth:            []ssh.AuthMethod{ssh.Password(passwd)},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		Timeout: 		SshDailTimeout * time.Second,
 	})
 	if err != nil {
-		log.Fatalf("SSH dial error: %s", err.Error())
+		log.Printf("SSH dial error: %s", err.Error())
+		return
 	}
 	defer client.Close()
 
@@ -73,7 +76,8 @@ func doSsh(ip, user, passwd string) {
 	session, err := client.NewSession()
 	defer session.Close()
 	if err != nil {
-		log.Fatalf("new session error: %s", err.Error())
+		log.Printf("new session error: %s", err.Error())
+		return
 	}
 
 	modes := ssh.TerminalModes{
@@ -89,9 +93,11 @@ func doSsh(ip, user, passwd string) {
 
 	if err = session.RequestPty("xterm", TerminalHeight, TerminalWidth, modes); err != nil {
 		fmt.Println("1", err.Error())
+		return
 	}
 	if err = session.Shell(); err != nil {
 		fmt.Println("2", err.Error())
+		return
 	}
 
 	session.Wait()
