@@ -30,7 +30,8 @@ func showOne() {
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("请输入要显示主机信息的序号: ")
-		text, err := reader.ReadString('\n')
+
+		next: text, err := reader.ReadString('\n')
 		if err != nil {
 			log.Println(err.Error())
 			return
@@ -48,6 +49,11 @@ func showOne() {
 			return
 		}
 
-		fmt.Printf("user: %s, password: %s\n\n", machines[index].User, machines[index].Password)
+		if 0 <= index && index < len(machines) {
+			fmt.Printf("user: %s, password: %s\n\n", machines[index].User, machines[index].Password)
+		} else {
+			fmt.Printf("序号选择错误，请重新选择：")
+			goto next
+		}
 	}
 }
