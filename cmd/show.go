@@ -32,10 +32,10 @@ func showOne() {
 		fmt.Print("请输入要显示主机信息的序号: ")
 
 		next: text, err := reader.ReadString('\n')
-		if err != nil {
-			log.Println(err.Error())
-			return
-		}
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
 
 		// show machine
 		choose := strings.Split(text, "\n")[0]
@@ -43,13 +43,14 @@ func showOne() {
 			return
 		}
 
-		index, err := strconv.Atoi(choose)
+		index, err := strconv.ParseInt(choose, 10, 32)
 		if err != nil {
-			log.Println(err.Error())
-			return
+			//log.Println(err.Error())
+			fmt.Printf("序号选择错误，请重新选择：")
+			goto next
 		}
 
-		if 0 <= index && index < len(machines) {
+		if 0 <= int(index) && int(index) < len(machines) {
 			fmt.Printf("user: %s, password: %s\n\n", machines[index].User, machines[index].Password)
 		} else {
 			fmt.Printf("序号选择错误，请重新选择：")
