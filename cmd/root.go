@@ -17,6 +17,12 @@ const (
 	SshDailTimeout = 5
 )
 
+const (
+	TIOCGWINSZ     = 0x5413
+	TIOCGWINSZ_OSX = 1074295912
+)
+
+
 var rootCmd = cobra.Command{
 	Use:   string("use: ssh-tools"),
 	Short: string("short: ssh-tools"),

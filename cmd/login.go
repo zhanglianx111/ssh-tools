@@ -8,9 +8,12 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 	"log"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
+	"unsafe"
 )
 
 var listCmd = &cobra.Command{
@@ -24,6 +27,13 @@ var listCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(listCmd)
+}
+
+type window struct {
+	Row    uint16
+	Col    uint16
+	Xpixel uint16
+	Ypixel uint16
 }
 
 func login() {
@@ -90,8 +100,12 @@ func doSsh(ip, user, passwd string) {
 	session.Stdin = os.Stdin
 	session.Stdout = os.Stdout
 	session.Stderr = os.Stderr
-
-	if err = session.RequestPty("xterm", TerminalHeight, TerminalWidth, modes); err != nil {
+	height, width, err := getLinesAndColumns()
+	if err != nil {
+		return
+	}
+	fmt.Println(height, width)
+	if err = session.RequestPty("xterm", height, width, modes); err != nil {
 		fmt.Println("1", err.Error())
 		return
 	}
@@ -101,4 +115,37 @@ func doSsh(ip, user, passwd string) {
 	}
 
 	session.Wait()
+}
+/*
+func getLinesAndColumns() (int, int) {
+	l := os.Getenv("LINES")
+	c := os.Getenv("COLUMNS")
+	fmt.Println("sss", l, c)
+	lines, err := strconv.Atoi(l)
+	if err != nil {
+		lines = TerminalHeight
+	}
+	colcumns, err := strconv.Atoi(c)
+	if err != nil {
+		colcumns = TerminalWidth
+	}
+	return lines, colcumns
+}
+ */
+
+func getLinesAndColumns() (int, int, error) {
+	w := new(window)
+	tio := syscall.TIOCGWINSZ
+	if runtime.GOOS == "darwin" {
+		tio = TIOCGWINSZ_OSX
+	}
+	res, _, err := syscall.Syscall(syscall.SYS_IOCTL,
+		uintptr(syscall.Stdin),
+		uintptr(tio),
+		uintptr(unsafe.Pointer(w)),
+	)
+	if int(res) == -1 {
+		return 0, 0, err
+	}
+	return int(w.Row), int(w.Col), nil
 }
