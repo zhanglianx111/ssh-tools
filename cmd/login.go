@@ -3,9 +3,6 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"github.com/spf13/cobra"
-	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/terminal"
 	"log"
 	"os"
 	"runtime"
@@ -14,6 +11,11 @@ import (
 	"syscall"
 	"time"
 	"unsafe"
+
+	"github.com/spf13/cobra"
+	"github.com/zhanglianx111/ssh-tools/utils"
+	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 var listCmd = &cobra.Command{
@@ -21,12 +23,15 @@ var listCmd = &cobra.Command{
 	Short: string("登陆主机"),
 	Long:  string("\n登陆主机"),
 	Run: func(cmd *cobra.Command, args []string) {
-		login()
+		login(args)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
+
+	listCmd.Flags().BoolP("ping", "p", false, "get status by pinging machine, default vaule: false")
+	//addCmd.MarkFlagRequired("username")
 }
 
 type window struct {
@@ -36,9 +41,28 @@ type window struct {
 	Ypixel uint16
 }
 
-func login() {
+func login(args []string) {
+	statusFlag := "false"
 	machines := getAll()
-	show(machines)
+
+	// update machine connneted status
+	if len(args) == 1 && args[0] == "true" {
+		statusFlag = args[0]
+		machineIPs := []string{}
+		for _, m := range machines {
+			machineIPs = append(machineIPs, m.Ip)
+		}
+
+		status := utils.PingAll(machineIPs)
+		for k, v := range status {
+			fmt.Printf("%s: %t\n", k, v)
+		}
+
+		for i := 0; i < len(machines); i++ {
+			machines[i].Status = status[machines[i].Ip]
+		}
+	}
+	show(machines, statusFlag)
 
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("请输入序号: ")
@@ -74,7 +98,7 @@ func doSsh(ip, user, passwd string) {
 		User:            user,
 		Auth:            []ssh.AuthMethod{ssh.Password(passwd)},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-		Timeout: 		SshDailTimeout * time.Second,
+		Timeout:         SshDailTimeout * time.Second,
 	})
 	if err != nil {
 		log.Printf("SSH dial error: %s", err.Error())
@@ -116,6 +140,7 @@ func doSsh(ip, user, passwd string) {
 
 	session.Wait()
 }
+
 /*
 func getLinesAndColumns() (int, int) {
 	l := os.Getenv("LINES")
@@ -131,7 +156,7 @@ func getLinesAndColumns() (int, int) {
 	}
 	return lines, colcumns
 }
- */
+*/
 
 func getLinesAndColumns() (int, int, error) {
 	w := new(window)

@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
 )
 
 type Machine struct {
@@ -12,6 +13,7 @@ type Machine struct {
 	Description string
 	User        string
 	Password    string
+	Status      bool
 }
 
 const sshPort = "22"
@@ -33,14 +35,21 @@ func getAll() []Machine {
 	return machines
 }
 
-func show(m []Machine) {
+func show(m []Machine, flag string) {
 	if len(m) == 0 {
 		return
 	}
 
-	fmt.Println("序号\tIP\t\t描述")
-	for i := 0; i < len(m); i++ {
-		fmt.Printf("%d ---> %s\t%s\n", i, m[i].Ip, m[i].Description)
+	if flag == "true" {
+		fmt.Println("序号\tIP\t\t描述\t状态")
+		for i := 0; i < len(m); i++ {
+			fmt.Printf("%d ---> %s\t%s\t%t\n", i, m[i].Ip, m[i].Description, m[i].Status)
+		}
+	} else {
+		fmt.Println("序号\tIP\t\t描述")
+		for i := 0; i < len(m); i++ {
+			fmt.Printf("%d ---> %s\t%s\n", i, m[i].Ip, m[i].Description)
+		}
 	}
 	return
 }

@@ -3,11 +3,12 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 var showCmd = &cobra.Command{
@@ -25,17 +26,18 @@ func init() {
 
 func showOne() {
 	machines := getAll()
-	show(machines)
+	show(machines, "false")
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("请输入要显示主机信息的序号: ")
 
-		next: text, err := reader.ReadString('\n')
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
+	next:
+		text, err := reader.ReadString('\n')
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
 
 		// show machine
 		choose := strings.Split(text, "\n")[0]

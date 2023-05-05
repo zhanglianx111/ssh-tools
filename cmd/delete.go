@@ -3,13 +3,14 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"github.com/spf13/cobra"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/spf13/cobra"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 var deleteCmd = &cobra.Command{
@@ -27,7 +28,7 @@ func init() {
 
 func delete() {
 	machines := getAll()
-	show(machines)
+	show(machines, "false")
 
 	for {
 		reader := bufio.NewReader(os.Stdin)

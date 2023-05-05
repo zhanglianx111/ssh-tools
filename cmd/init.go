@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
-	"os"
 )
 
 const createTable = `
@@ -14,7 +15,8 @@ const createTable = `
   	ip TEXT NOT NULL PRIMARY KEY,
 	description TEXT,
   	user TEXT NOT NULL,
-	password TEXT NOT NULL
+	password TEXT NOT NULL,
+	status TEXT
   );
 `
 

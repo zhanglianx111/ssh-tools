@@ -19,5 +19,5 @@ func init() {
 
 func list() {
 	machines := getAll()
-	show(machines)
+	show(machines, "false")
 }
