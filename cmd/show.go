@@ -26,7 +26,7 @@ func init() {
 
 func showOne() {
 	machines := getAll()
-	show(machines, "false")
+	show(machines, false)
 
 	for {
 		reader := bufio.NewReader(os.Stdin)

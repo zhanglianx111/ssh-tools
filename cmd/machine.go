@@ -35,12 +35,12 @@ func getAll() []Machine {
 	return machines
 }
 
-func show(m []Machine, flag string) {
+func show(m []Machine, flag bool) {
 	if len(m) == 0 {
 		return
 	}
 
-	if flag == "true" {
+	if flag {
 		fmt.Println("序号\tIP\t\t状态\t描述")
 		for i := 0; i < len(m); i++ {
 			fmt.Printf("%d ---> %s\t%t\t%s\n", i, m[i].Ip, m[i].Status, m[i].Description)
