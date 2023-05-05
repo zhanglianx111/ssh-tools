@@ -1,9 +1,8 @@
 package utils
 
 import (
-	"fmt"
-
-	"github.com/go-ping/ping"
+	"net"
+	"time"
 )
 
 func PingOne(machine string) bool {
@@ -16,23 +15,19 @@ func PingAll(machines []string) map[string]bool {
 		state := pingOnce(m)
 		status[m] = state
 	}
-	fmt.Println(status)
 	return status
 }
 
-func pingOnce(machine string) (stat bool) {
-	pinger, err := ping.NewPinger(machine)
+func pingOnce(machine string) bool {
+	conn, err := net.DialTimeout("tcp", machine+":"+"22", 1*time.Second)
 	if err != nil {
-		panic(err)
+		return false
+	} else {
+		if conn != nil {
+			conn.Close()
+			return true
+		} else {
+			return false
+		}
 	}
-	pinger.Count = 3
-	err = pinger.Run() // Blocks until finished.
-	if err != nil {
-		panic(err)
-	}
-	stats := pinger.Statistics()
-	stat = true
-	fmt.Println(stats, stat)
-
-	return stat
 }

@@ -30,7 +30,7 @@ var listCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(listCmd)
 
-	listCmd.Flags().BoolP("ping", "p", false, "get status by pinging machine, default vaule: false")
+	listCmd.Flags().BoolP("ping", "p", true, "get status by pinging machine, default vaule: true")
 	//addCmd.MarkFlagRequired("username")
 }
 
