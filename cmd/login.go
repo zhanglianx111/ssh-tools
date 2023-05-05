@@ -23,7 +23,16 @@ var listCmd = &cobra.Command{
 	Short: string("登陆主机"),
 	Long:  string("\n登陆主机"),
 	Run: func(cmd *cobra.Command, args []string) {
-		login(args)
+		statusFlag, err := cmd.Flags().GetBool("ping")
+		if err != nil {
+			log.Print(err.Error())
+			return
+		}
+
+		if len(args) == 1 && args[0] == "false" {
+			statusFlag = false
+		}
+		login(statusFlag)
 	},
 }
 
@@ -31,7 +40,6 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 
 	listCmd.Flags().BoolP("ping", "p", true, "get status by pinging machine, default vaule: true")
-	//addCmd.MarkFlagRequired("username")
 }
 
 type window struct {
@@ -41,28 +49,23 @@ type window struct {
 	Ypixel uint16
 }
 
-func login(args []string) {
-	statusFlag := "false"
+func login(flag bool) {
 	machines := getAll()
 
 	// update machine connneted status
-	if len(args) == 1 && args[0] == "true" {
-		statusFlag = args[0]
+	if flag {
 		machineIPs := []string{}
 		for _, m := range machines {
 			machineIPs = append(machineIPs, m.Ip)
 		}
 
-		status := utils.PingAll(machineIPs)
-		for k, v := range status {
-			fmt.Printf("%s: %t\n", k, v)
-		}
+		status := utils.PingAll(machineIPs) 
 
 		for i := 0; i < len(machines); i++ {
 			machines[i].Status = status[machines[i].Ip]
 		}
 	}
-	show(machines, statusFlag)
+	show(machines, flag)
 
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("请输入序号: ")

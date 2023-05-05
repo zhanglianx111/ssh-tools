@@ -19,7 +19,7 @@ func PingAll(machines []string) map[string]bool {
 }
 
 func pingOnce(machine string) bool {
-	conn, err := net.DialTimeout("tcp", machine+":"+"22", 1*time.Second)
+	conn, err := net.DialTimeout("tcp", machine+":"+"22", 10*time.Millisecond)
 	if err != nil {
 		return false
 	} else {
