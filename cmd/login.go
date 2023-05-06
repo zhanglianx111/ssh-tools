@@ -68,7 +68,7 @@ func login(flag bool) {
 	show(machines, flag)
 
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("请输入序号: ")
+	fmt.Print("请输入要登陆主机的序号: ")
 	text, err := reader.ReadString('\n')
 	if err != nil {
 		os.Exit(9)
