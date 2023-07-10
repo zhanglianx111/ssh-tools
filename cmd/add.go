@@ -1,11 +1,12 @@
 package cmd
 
 import (
+	"log"
+	"net"
+
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"net"
-	"log"
 )
 
 var addCmd = &cobra.Command{
