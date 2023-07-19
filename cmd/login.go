@@ -59,7 +59,7 @@ func login(flag bool) {
 			machineIPs = append(machineIPs, m.Ip)
 		}
 
-		status := utils.PingAll(machineIPs) 
+		status := utils.PingAll(machineIPs)
 
 		for i := 0; i < len(machines); i++ {
 			machines[i].Status = status[machines[i].Ip]
@@ -67,8 +67,10 @@ func login(flag bool) {
 	}
 	show(machines, flag)
 
-	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("请输入要登陆主机的序号: ")
+
+input:
+	reader := bufio.NewReader(os.Stdin)
 	text, err := reader.ReadString('\n')
 	if err != nil {
 		os.Exit(9)
@@ -84,6 +86,10 @@ func login(flag bool) {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(10)
+	}
+	if index < 0 || index >= len(machines) {
+		fmt.Print("输入的主机序号错误，请重新输入: ")
+		goto input
 	}
 	doSsh(machines[index].Ip, machines[index].User, machines[index].Password)
 }
