@@ -43,7 +43,11 @@ func show(m []Machine, flag bool) {
 	if flag {
 		fmt.Println("序号\tIP\t\t状态\t描述")
 		for i := 0; i < len(m); i++ {
-			fmt.Printf("%d ---> %s\t%t\t%s\n", i, m[i].Ip, m[i].Status, m[i].Description)
+			if m[i].Status {
+				fmt.Printf("%d ---> %s\t\033[32m%t\033[0m\t%s\n", i, m[i].Ip, m[i].Status, m[i].Description)
+			} else {
+				fmt.Printf("%d ---> %s\t\033[31m%t\033[0m\t%s\n", i, m[i].Ip, m[i].Status, m[i].Description)
+			}
 		}
 	} else {
 		fmt.Println("序号\tIP\t\t描述")

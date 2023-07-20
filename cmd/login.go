@@ -88,7 +88,7 @@ input:
 		os.Exit(10)
 	}
 	if index < 0 || index >= len(machines) {
-		fmt.Print("输入的主机序号错误，请重新输入: ")
+		fmt.Print("\033[31m输入的主机序号错误, 请重新输入: \033[0m")
 		goto input
 	}
 	doSsh(machines[index].Ip, machines[index].User, machines[index].Password)
